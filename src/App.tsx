@@ -507,15 +507,20 @@ export default function App() {
                     src={heroImages[heroImageIndex].url}
                     alt={heroImages[heroImageIndex].title}
                     custom={slideDirection}
-                    initial={(dir: number) => ({
-                      x: dir > 0 ? '100%' : '-100%',
-                    })}
-                    animate={{
-                      x: '0%',
+                    variants={{
+                      enter: (dir: number) => ({
+                        x: dir > 0 ? '100%' : '-100%',
+                      }),
+                      center: {
+                        x: '0%',
+                      },
+                      exit: (dir: number) => ({
+                        x: dir > 0 ? '-100%' : '100%',
+                      }),
                     }}
-                    exit={(dir: number) => ({
-                      x: dir > 0 ? '-100%' : '100%',
-                    })}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
                     transition={{
                       type: "spring",
                       stiffness: 150,
