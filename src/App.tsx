@@ -41,6 +41,17 @@ export default function App() {
   const [notifyEmail, setNotifyEmail] = useState('');
 
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedStreetLook, setSelectedStreetLook] = useState<{
+    id: string;
+    img: string;
+    user: string;
+    likes: string;
+    location: string;
+    shoeName: string;
+    shoeBrand: Brand;
+    shoePrice: number;
+    quote: string;
+  } | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -60,13 +71,13 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (isCartOpen || isWishlistOpen || isMobileMenuOpen || isVaultAccessOpen || isDropsModalOpen || quickViewProduct !== null || emailPromptDropId !== null) {
+    if (isCartOpen || isWishlistOpen || isMobileMenuOpen || isVaultAccessOpen || isDropsModalOpen || quickViewProduct !== null || emailPromptDropId !== null || selectedStreetLook !== null) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
     return () => { document.body.style.overflow = 'unset'; };
-  }, [isCartOpen, isWishlistOpen, isMobileMenuOpen, isVaultAccessOpen, isDropsModalOpen, quickViewProduct, emailPromptDropId]);
+  }, [isCartOpen, isWishlistOpen, isMobileMenuOpen, isVaultAccessOpen, isDropsModalOpen, quickViewProduct, emailPromptDropId, selectedStreetLook]);
 
   // Global search shortcut (Cmd+K / Ctrl+K / Escape)
   useEffect(() => {
@@ -426,9 +437,9 @@ export default function App() {
       </div>
 
       {/* Hero Section */}
-      <div id="hero" className="scroll-spy-section relative overflow-hidden pt-12 lg:pt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 lg:pt-20 lg:pb-24 mt-[48px] relative">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+      <div id="hero" className="scroll-spy-section relative overflow-hidden min-h-[100dvh] flex flex-col items-center justify-center pt-20 sm:pt-24 pb-10 sm:pb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 flex items-center justify-center relative">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center justify-center w-full">
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -491,7 +502,7 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95, x: 20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ duration: 1, ease: "easeOut", delay: 0.1 }}
-              className="relative block h-[320px] sm:h-[420px] lg:h-full lg:min-h-[520px] group mt-8 lg:mt-0"
+              className="relative block h-[280px] sm:h-[380px] lg:h-[460px] xl:h-[500px] w-full group mt-6 lg:mt-0"
             >
               <div className="absolute inset-0 rounded-[3rem] overflow-hidden shadow-md bg-zinc-100 border border-zinc-200/60">
                 {/* Underlying base image to prevent black screen flashes */}
@@ -642,7 +653,7 @@ export default function App() {
                       {/* Bottom Row */}
                       <div className="flex flex-col md:flex-row gap-4 flex-1 md:hover:flex-[2] transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]">
                         {[
-                          { title: 'NEW BALANCE', id: 'New Balance', image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&q=80&w=800' },
+                          { title: 'NEW BALANCE', id: 'New Balance', image: 'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&q=80&w=1000' },
                           { title: 'ASICS', id: 'Asics', image: 'https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&q=80&w=800' },
                           { title: 'PUMA', id: 'Puma', image: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&q=80&w=800' }
                         ].map((brand, index) => (
@@ -1140,15 +1151,20 @@ export default function App() {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 gap-4">
           {[
-            'https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&q=80&w=600',
-            'https://images.unsplash.com/photo-1617251137884-f135eccf6942?auto=format&fit=crop&q=80&w=600',
-            'https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&q=80&w=600',
-            'https://images.unsplash.com/photo-1528701800487-ba01fea498c0?auto=format&fit=crop&q=80&w=600'
-          ].map((img, i) => (
-            <div key={i} className="aspect-square relative group overflow-hidden cursor-pointer rounded-[2rem] shadow-sm border border-zinc-200/60 bg-zinc-50/80 backdrop-blur-md">
-              <img src={img} onError={(e) => e.currentTarget.src='https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&q=80&w=800'} alt={`Community ${i+1}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 p-2 rounded-[2rem]" />
-              <div className="absolute inset-0 bg-white/0 group-hover:bg-white/20 backdrop-blur-[2px] transition-all duration-300 opacity-0 group-hover:opacity-100 flex items-center justify-center rounded-[2rem]">
-                <span className="text-zinc-900 font-display font-bold tracking-widest text-lg px-6 py-2 bg-white/90 backdrop-blur-md rounded-full border border-zinc-200 shadow-md">VIEW</span>
+            { id: 'look-1', img: 'https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&q=80&w=800', user: '@alex_k', likes: '1.4k', location: 'Shibuya • Tokyo, JP', shoeName: "Dunk Low 'Panda'", shoeBrand: 'Nike' as Brand, shoePrice: 110, quote: 'Classic monochrome silhouette styled for high-density street navigation.' },
+            { id: 'look-2', img: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=800', user: '@sarah.snkrs', likes: '2.1k', location: 'SoHo • New York, US', shoeName: "Air Jordan 1 'Lost & Found'", shoeBrand: 'Nike' as Brand, shoePrice: 180, quote: 'Vintage cracked leather patina paired with relaxed Japanese raw selvedge.' },
+            { id: 'look-3', img: 'https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&q=80&w=800', user: '@marcus_kicks', likes: '980', location: 'Mitte • Berlin, DE', shoeName: 'New Balance 990v6', shoeBrand: 'New Balance' as Brand, shoePrice: 200, quote: 'Unmatched 990 heritage ENCAP comfort for long urban exploration.' },
+            { id: 'look-4', img: 'https://images.unsplash.com/photo-1528701800487-ba01fea498c0?auto=format&fit=crop&q=80&w=800', user: '@elena_fits', likes: '3.2k', location: 'Le Marais • Paris, FR', shoeName: 'Asics Gel-Kayano 14', shoeBrand: 'ASICS' as Brand, shoePrice: 150, quote: 'Metallic tech-runner aesthetics with tailored pleated wool trousers.' }
+          ].map((item, i) => (
+            <div 
+              key={item.id} 
+              onClick={() => setSelectedStreetLook(item)}
+              className="aspect-square relative group overflow-hidden cursor-pointer rounded-[2rem] shadow-sm border border-zinc-200/60 bg-zinc-50/80 backdrop-blur-md transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+            >
+              <img src={item.img} onError={(e) => e.currentTarget.src='https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&q=80&w=800'} alt={`Community ${i+1}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 p-2 rounded-[2rem]" />
+              <div className="absolute inset-0 bg-zinc-900/30 group-hover:bg-zinc-900/50 backdrop-blur-[2px] transition-all duration-300 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center p-4 rounded-[2rem] text-center">
+                <span className="text-zinc-900 font-display font-bold tracking-widest text-xs px-5 py-2.5 bg-white/95 backdrop-blur-md rounded-full border border-zinc-200 shadow-lg uppercase mb-2">SHOP LOOK</span>
+                <span className="text-white text-[11px] font-sans font-bold tracking-wider">{item.user}</span>
               </div>
             </div>
           ))}
@@ -1891,6 +1907,120 @@ export default function App() {
                     <ArrowRight className="w-4 h-4 text-zinc-400" />
                   </button>
                 ))}
+              </div>
+            </motion.div>
+          </div>
+        )}
+
+        {/* Floating Street Look Modal */}
+        {selectedStreetLook && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedStreetLook(null)}
+              className="fixed inset-0 bg-zinc-900/60 backdrop-blur-md"
+            />
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-4xl bg-white/95 backdrop-blur-2xl rounded-[3rem] border border-zinc-200/80 shadow-2xl overflow-hidden z-10 p-6 sm:p-8 md:p-10 my-auto"
+            >
+              <button 
+                onClick={() => setSelectedStreetLook(null)}
+                className="absolute top-6 right-6 z-20 w-10 h-10 rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-800 flex items-center justify-center transition-colors border border-zinc-200 shadow-sm"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                {/* Image */}
+                <div className="relative aspect-square rounded-[2rem] overflow-hidden border border-zinc-200/80 shadow-md group">
+                  <img 
+                    src={selectedStreetLook.img} 
+                    alt={selectedStreetLook.user} 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute top-4 left-4 bg-zinc-900/80 backdrop-blur-md border border-zinc-700/50 text-zinc-100 px-3.5 py-1.5 rounded-full text-[11px] font-bold tracking-wider uppercase flex items-center gap-1.5 shadow-sm">
+                    <Heart className="w-3.5 h-3.5 fill-zinc-300 text-zinc-300" />
+                    {selectedStreetLook.likes} Likes
+                  </div>
+                </div>
+
+                {/* Details */}
+                <div className="flex flex-col h-full justify-between">
+                  <div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
+                      <span className="text-zinc-500 font-sans font-bold text-xs uppercase tracking-widest">
+                        {selectedStreetLook.location}
+                      </span>
+                    </div>
+
+                    <h3 className="text-2xl sm:text-3xl font-display font-bold text-zinc-900 tracking-tight mb-2">
+                      {selectedStreetLook.user}
+                    </h3>
+
+                    <p className="text-zinc-600 font-sans text-sm md:text-base leading-relaxed font-normal not-italic mb-6 border-l-2 border-zinc-900 pl-4 py-1">
+                      "{selectedStreetLook.quote}"
+                    </p>
+
+                    {/* Tagged Shoe Card */}
+                    <div className="bg-zinc-50 border border-zinc-200/80 rounded-2xl p-4 flex items-center justify-between mb-8 shadow-inner">
+                      <div>
+                        <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase block mb-1">
+                          TAGGED SILHOUETTE
+                        </span>
+                        <h4 className="font-display font-bold text-zinc-900 text-base">
+                          {selectedStreetLook.shoeName}
+                        </h4>
+                        <p className="text-xs font-bold text-zinc-500 uppercase">
+                          {selectedStreetLook.shoeBrand}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <span className="font-display font-extrabold text-zinc-900 text-xl block">
+                          ${selectedStreetLook.shoePrice}
+                        </span>
+                        <span className="text-[10px] font-bold text-zinc-700 uppercase bg-zinc-200/80 px-2 py-0.5 rounded-md border border-zinc-300">
+                          In Stock
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex flex-col sm:flex-row gap-2.5 pt-6 border-t border-zinc-100 items-center w-full">
+                    <button 
+                      onClick={() => {
+                        const matchedProduct = products.find(p => p.name.toLowerCase().includes(selectedStreetLook.shoeName.toLowerCase()) || p.brand === selectedStreetLook.shoeBrand);
+                        if (matchedProduct) {
+                          addToCart(matchedProduct);
+                        } else {
+                          addToCart(products[0]);
+                        }
+                        setSelectedStreetLook(null);
+                      }}
+                      className="w-full sm:flex-1 py-3.5 px-4 bg-zinc-900 hover:bg-zinc-800 text-white rounded-full font-sans font-bold text-xs tracking-wider uppercase transition-all shadow-md flex items-center justify-center gap-2 active:scale-95 border border-zinc-800 shrink-0"
+                    >
+                      <ShoppingBag className="w-4 h-4 text-white shrink-0" />
+                      <span className="whitespace-nowrap">Add Tagged Pair</span>
+                    </button>
+                    <button 
+                      onClick={() => {
+                        setSelectedStreetLook(null);
+                        document.getElementById('products-top')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                      className="w-full sm:w-auto py-3.5 px-4 bg-zinc-100 hover:bg-zinc-200 text-zinc-900 rounded-full font-sans font-bold text-xs tracking-wider uppercase transition-all border border-zinc-200/80 whitespace-nowrap active:scale-95 shrink-0"
+                    >
+                      Explore Catalog
+                    </button>
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>
